@@ -1,0 +1,50 @@
+#!/bin/sh
+
+if [ -z "$QUERY_STRING" ]; then COMMAND=$1;
+else
+COMMAND=`echo "$QUERY_STRING" | sed -n 's/^.*command=\([^&]*\).*$/\1/p'`
+printf "Content-type: text/plain\r\n\r\n"
+fi
+
+case $COMMAND in
+        amp_on)
+                irsend send_once amp power_on;;
+        amp_off)
+                irsend send_once amp power_off;;
+        power_on)
+                irsend send_once timberk  power;;
+        power_off)
+                irsend send_once timberk  power;;
+        cooler_on)
+        	irsend send_once timberk  cooler_max;;
+        cooler_off)
+		irsend send_once timberk  cooler_min;;
+	light_on)
+	echo "light_on";;
+	light_off)
+	echo "light_off";;
+        venting_on)
+        echo "venting_on";;
+        venting_off)
+        echo "venting_off";;
+        toilet_on)
+        echo "toilet_on";;
+        toilet_off)
+        echo "toilet_off";;
+        *)      WRONG_ARG=1;;
+esac
+
+if [ -z $WRONG_ARG ]
+then
+	mkdir -p /tmp/www/
+        STATE_FILE=/tmp/www/stuffstate.php	
+        DEFAULT_STATE="
+	<?php  header(\"Access-Control-Allow-Origin: *\"); ?>
+	{\"power\":false,\"cooler\":false,\"amp\":false,\"light\":false,\"venting\":false,\"toilet\":false}"
+        if ! [ -e $STATE_FILE ]; then  echo $DEFAULT_STATE > $STATE_FILE; fi
+        AFFECTED_COND=`echo $COMMAND | sed -r -e 's/_[a-z]+$//'`
+        NEW_STATE=`echo $COMMAND | sed -r -e 's/^[a-z]+_//' -e 's/on/true/' -e 's/off|pulse/false/'`
+        sed -i -r 's/"'"$AFFECTED_COND"'":[a-z]+/"'"$AFFECTED_COND"'":'"$NEW_STATE"'/' $STATE_FILE
+	ln -s /tmp/www/stuffstate.php /www/stuffstate.php
+fi
+

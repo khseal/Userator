@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stuff control</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9">
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<script type="text/javascript">
+      var xmlHttp = null;
+      
+     
+      function pushTheButton(result)
+      {
+         var url = "http://192.168.5.7/button.lua?data=" + result;
+         xmlHttp = new XMLHttpRequest();
+         xmlHttp.onreadystatechange = processRequest;
+         xmlHttp.open("GET", url, true);
+         xmlHttp.send( null );
+      }
+
+
+
+
+      function processRequest()
+      {
+         if(xmlHttp.readyState == 0)
+         {
+            document.getElementById("check").innerHTML = 'Initalizing...';
+            document.getElementById("check").className = "initalizing";
+         }
+         else if(xmlHttp.readyState == 1)
+         {
+            document.getElementById("check").innerHTML = 'Server connection established.';
+            document.getElementById("check").className = "connection";
+         }
+         else if(xmlHttp.readyState == 2)
+         {
+            document.getElementById("check").innerHTML = 'Request received.';
+            document.getElementById("check").className = "received";
+         }
+         else if(xmlHttp.readyState == 3)
+         {
+            document.getElementById("check").innerHTML = 'Processing request.';
+            document.getElementById("check").className = "processing";
+         }
+         else if(xmlHttp.readyState == 4)
+         {
+            if(xmlHttp.status == 200)
+            {
+               document.getElementById("check").innerHTML = xmlHttp.responseText;
+               document.getElementById("check").className = "ok";
+	    setTimeout(function() { document.getElementById("check").className = "start";
+            			}, 300);
+            }
+            else if(xmlHttp.status == 400)
+            {
+               document.getElementById("check").innerHTML = 'Bad request.';
+               document.getElementById("check").className = "bad";
+            }
+         }
+      }
+
+
+
+	function command(action)
+	{
+		url="/cgi-bin/stuff?command="+action;
+		url=url+"&fuie=" + Math.random(); 
+		var xmlhttp=new XMLHttpRequest(); 
+		xmlhttp.open("GET",url,false);
+		xmlhttp.send();
+	}
+	function get_status()
+	{
+		var xmlhttp=new XMLHttpRequest();
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				ledstate = JSON.parse(xmlhttp.responseText)
+				for (led in ledstate)
+				{
+					document.getElementById(led).checked=ledstate[led]
+				}
+			}
+		} 
+		xmlhttp.open("GET","/stuffstate.php?fuie="+ Math.random(),false);
+		xmlhttp.send();
+		setTimeout("get_status()",1500);
+	}
+	function resizeText(multiplier) {
+		if (document.body.style.fontSize == "") {
+			document.body.style.fontSize = "1.0em";
+		}
+		document.body.style.fontSize = parseFloat(document.body.style.fontSize) + (multiplier * 0.2) + "em";
+	}
+	
+	function temp_get(){
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', encodeURI('/cgi-bin/temp'));
+		xhr.onload = function() {
+		if (xhr.status === 200) {
+		//alert('User\'s name is ' + xhr.responseText);
+		var a = document.getElementById('temperature');
+		a.innerHTML = xhr.responseText + "&deg C";
+   
+		}
+ };
+ xhr.send();
+setTimeout("temp_get()",10000);
+}
+
+temp_get();
+	</script>
+</head>
+
+<body onload="get_status()">
+               <center><strong class="label">Room  control</strong></center>
+	<div class="controls">
+		<label for="power">		
+			<div class="control">
+				<strong class="label">Conditioner power</strong>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="power"  
+					onclick="if (this.checked) command ('power_on'); else command ('power_off')">
+					<label class="onoffswitch-label" for="power">
+						<div class="onoffswitch-inner">
+							<div class="onoffswitch-active">I</div>
+							<div class="onoffswitch-inactive">O</div>
+						</div>
+						<div class="onoffswitch-switch"></div>
+					</label>
+				</div><div class="clear"></div>
+			</div>
+		</label>
+		<label for="cooler">
+			<div class="control">
+				<strong class="label">Cooler control</strong>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="cooler"  
+					onclick="if (this.checked) command ('cooler_on'); else command ('cooler_off')">
+					<label class="onoffswitch-label" for="cooler">
+						<div class="onoffswitch-inner">
+							<div class="onoffswitch-active">F</div>
+							<div class="onoffswitch-inactive">L</div>
+						</div>
+						<div class="onoffswitch-switch"></div>
+					</label>
+				</div><div class="clear"></div>
+			</div>
+		</label>
+		                <label for="amp">
+                        <div class="control">
+                                <strong class="label">Amplifier power</strong>
+                                <div class="onoffswitch">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="amp"
+                                        onclick="if (this.checked) command ('amp_on'); else command ('amp_off')">
+                                        <label class="onoffswitch-label" for="amp">
+                                                <div class="onoffswitch-inner">
+                                                        <div class="onoffswitch-active">I</div>
+                                                        <div class="onoffswitch-inactive">O</div>
+                                                </div>
+                                                <div class="onoffswitch-switch"></div>
+                                        </label>
+                                </div><div class="clear"></div>
+                        </div>
+                </label>		
+				
+		
+				
+                <label for="temp">
+                        <div class="control">
+                                <strong class="label">Temperature &nbsp;<span class="temp" id="temperature"/></strong>
+				 			
+                        </div>
+                </label>
+				
+	</div>
+
+		<center><strong class="label">Toilet control</strong></center>
+	<div class="controls">
+               <label for="light">
+                        <div class="control">
+                                <strong class="label">Light control</strong>
+                                <div class="onoffswitch">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="light"
+                                        onclick="if (this.checked)  pushTheButton ('light_on'); else  pushTheButton ('light_off')">
+                                        <label class="onoffswitch-label" for="light">
+                                                <div class="onoffswitch-inner">
+                                                        <div class="onoffswitch-active">I</div>
+                                                        <div class="onoffswitch-inactive">O</div>
+                                                </div>
+                                                <div class="onoffswitch-switch"></div>
+                                        </label>
+                                </div><div class="clear"></div>
+                        </div>
+                </label>
+		<label for="venting">
+			<div class="control">
+				<strong class="label">Раскидать говно вентилятором</strong>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="venting"  
+					onclick="if (this.checked) pushTheButton ('venting_on'); else  pushTheButton ('venting_off')">
+					<label class="onoffswitch-label" for="venting">
+						<div class="onoffswitch-inner">
+							<div class="onoffswitch-active">I</div>
+							<div class="onoffswitch-inactive">O</div>
+						</div>
+						<div class="onoffswitch-switch"></div>
+					</label>
+				</div><div class="clear"></div>
+			</div>
+		</label>
+		                <label for="toilet">
+                        <div class="control">
+                                <strong class="label">Смыть говно</strong>
+                                <div class="onoffswitch">
+                                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="toilet"
+                                        onclick="if (this.checked) pushTheButton ('toilet_on'); else pushTheButton ('toilet_off')">
+                                        <label class="onoffswitch-label" for="toilet">
+                                                <div class="onoffswitch-inner">
+                                                        <div class="onoffswitch-active">I</div>
+                                                        <div class="onoffswitch-inactive">O</div>
+                                                </div>
+                                                <div class="onoffswitch-switch"></div>
+                                        </label>
+                                </div><div class="clear"></div>
+                        </div>
+                </label>		
+				
+	</div>
+	<div id="check" class="start"></div>
+	<center>
+		<span class="control" onclick="resizeText(1)"><strong class="label">&nbsp;Zoom in&nbsp;</strong></span>
+	<span class="spacer">&nbsp;</span>
+	<span class="control" onclick="resizeText(-1)"><strong class="label">Zoom out</strong></span>
+	</center>
+</body>
+</html>

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+CAT=/bin/cat
+
+header() {
+        echo Content-type: text/html
+        echo ""
+}
+
+getvalue() {
+        val="$(awk -F= '/t=/ {printf "%.01f\n", ($2/1000)-4}' /sys/bus/w1/drivers/w1_slave_driver/*/w1_slave)"
+        echo -e "$val"
+}
+footer() {
+        echo ""
+}
+
+
+header
+case "$REQUEST_METHOD" in
+        GET) getvalue;;
+esac
+footer
