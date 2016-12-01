@@ -46,4 +46,3 @@ return function (connection, req, args)
       connection:send('{"error":-1, "message":"Bad button"}')
    end
 end
-

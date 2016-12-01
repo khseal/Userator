@@ -27,11 +27,10 @@ tmr.alarm(0,300, 1, function()
             http.get("http://192.168.5.3/cgi-bin/stuff?command=light_off")
             gpio.write(VentingPin,gpio.LOW)
             http.get("http://192.168.5.3/cgi-bin/stuff?command=venting_on")
-            tmr.alarm(1, 20000, tmr.ALARM_SINGLE, function() 
+            tmr.alarm(1, 40000, tmr.ALARM_SINGLE, function() 
             gpio.write(VentingPin,gpio.HIGH) 
             http.get("http://192.168.5.3/cgi-bin/stuff?command=venting_off")
             end)
             end
         end
     end)
-
