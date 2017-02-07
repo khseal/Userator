@@ -7,7 +7,7 @@
 V1
 За основу веб сервера взят проект https://github.com/marcoskirsch/nodemcu-httpserver
 v2
-Во второй версии используется сервер https://github.com/borischernov/nodemcu_http_server
+Во второй версии используется сервер https://github.com/wangzexi/NodeMCU-HTTP-Server
 Так же добавлен сервис для удаленного редактирования lua скриптов https://espsky.com/
 Чтобы удаленно залить файлы в ESP рекомендуется отключать http сервер.
 
