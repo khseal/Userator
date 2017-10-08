@@ -8,6 +8,8 @@ v2
 Добавлено автосмывание. 
 Добавлено переключение режима освещения. Ночью включается автоматически свет только в ванне.
 Добавлена конфигурация Wi-fi.
+Требуемые модули в прошивке ESP:
+adc, enduser_setup, file, gpio, http, net, node, pwm, tmr, uart, wifi.
 
 Из железа используется
 https://ru.aliexpress.com/item/V3-Wireless-module-NodeMcu-4M-bytes-Lua-WIFI-Internet-of-Things-development-board-based-ESP8266-esp/32647542733.html?spm=2114.13010608.0.0.3uBxL5
