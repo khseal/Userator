@@ -1,4 +1,5 @@
+dofile('gpio.lua')
 print('Setting up WIFI...')
 wifi.setmode(wifi.STATION)
-wifi.sta.config('AP', 'pass')
+wifi.sta.config('Boroda', 'abrakodabra')
 wifi.sta.connect()

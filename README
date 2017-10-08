@@ -1,17 +1,16 @@
 
 Проект умного сортира на базе ESP8266 NodeMCU.
 
-В стадии тестирования. Имеет свой веб сервер. Управляет светом и вентиляцией.
-Появилось две версии. Скорее всего, первая версия будет удалена.
-В разработке смывание унитаза и сбор данных со счетчика воды.
-V1
-За основу веб сервера взят проект https://github.com/marcoskirsch/nodemcu-httpserver
+Имеет свой веб сервер. Управляет светом и вентиляцией.
 v2
-Во второй версии используется сервер https://github.com/wangzexi/NodeMCU-HTTP-Server
-Так же добавлен сервис для удаленного редактирования lua скриптов https://espsky.com/
-Чтобы удаленно залить файлы в ESP рекомендуется отключать http сервер.
+Во второй версии используется сервер https://github.com/borischernov/nodemcu_http_server
+Добавлено управление светом в ванне.
+Добавлено автосмывание. 
+Добавлено переключение режима освещения. Ночью включается автоматически свет только в ванне.
+Добавлена конфигурация Wi-fi.
 
 Из железа используется
 https://ru.aliexpress.com/item/V3-Wireless-module-NodeMcu-4M-bytes-Lua-WIFI-Internet-of-Things-development-board-based-ESP8266-esp/32647542733.html?spm=2114.13010608.0.0.3uBxL5
 https://ru.aliexpress.com/item/1pcs-lot-4-channel-relay-module-4-channel-relay-control-board-with-optocoupler-Relay-Output-4/32340914033.html?spm=2114.13010608.0.0.3uBxL5
 https://ru.aliexpress.com/item/HC-SR501-Adjust-IR-Pyroelectric-Infrared-PIR-Motion-Sensor-Detector-Module/32477783558.html?spm=2114.13010608.0.0.3uBxL5
+https://ru.aliexpress.com/item/Servo-MG995/32668869179.html?ws_ab_test=searchweb0_0%2Csearchweb201602_1_10152_10065_10151_10068_10344_10342_10343_10340_10341_10307_10301_10060_10155_10154_10056_10055_10054_10059_10534_10533_10532_100031_10099_10338_10339_10103_10102_10169_10052_10053_10142_10107_10050_10051_10084_10083_10080_10082_10081_10110_10111_10112_10113_10114_10312_10313_10314_10078_10079_10211_10128_10073_10129_10125%2Csearchweb201603_24%2CppcSwitch_5&btsid=fe7be326-c16b-48a3-b4ed-5365ab301fb6&algo_expid=5352bca5-8025-43d8-8db5-980fbbd7dd4e-10&algo_pvid=5352bca5-8025-43d8-8db5-980fbbd7dd4e
